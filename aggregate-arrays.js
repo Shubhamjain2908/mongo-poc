@@ -7,3 +7,15 @@ db.friends.aggregate([
     { $unwind: '$hobbies' },
     { $group: { _id: { age: '$age' }, allHobbies: { $addToSet: '$hobbies' } } }
 ]).pretty();
+
+// using projection with the arrays
+db.friends.aggregate([
+    {
+        $project: {
+            _id: 0,
+            examScore: {
+                $slice: ['$examScores', 1]
+            }
+        }
+    }
+]).pretty();
