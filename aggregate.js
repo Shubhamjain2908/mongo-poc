@@ -48,11 +48,20 @@ db.persons.aggregate([
     }
 ])
 
-// Turning the location into geoJSON object
+// Turning the location into geoJSON object & formating birthdate
 db.persons.aggregate([
     {
         $project: {
-            _id: 0, name: 1, email: 1, location: {
+            _id: 0,
+            name: 1,
+            email: 1,
+            birthdate: {
+                $convert: {
+                    input: '$dob.date', to: 'date'
+                }
+            },
+            age: '$dob.age',
+            location: {
                 type: 'Point', coordinates: [
                     {
                         $convert: {
@@ -79,6 +88,8 @@ db.persons.aggregate([
             gender: 1,
             email: 1,
             location: 1,
+            birthdate: 1,
+            age: 1,
             fullName: {
                 $concat: [
                     { $toUpper: { $substrCP: ["$name.first", 0, 1] } },
