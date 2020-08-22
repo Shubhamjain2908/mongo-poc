@@ -47,3 +47,10 @@ db.friends.aggregate([
         }
     }
 ]).pretty();
+
+// get highest elem from array
+db.friends.aggregate([
+    { $unwind: '$examScores' },
+    { $project: { _id: 0, name: 1, age: 1, score: "$examScores.score" } },
+    { $sort: { score: -1 } }
+]).pretty();
